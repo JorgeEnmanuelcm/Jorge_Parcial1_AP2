@@ -63,7 +63,7 @@ namespace BLL
             bool Retorno = false;
             try
             {
-                Retorno = Conexion.Ejecutar(String.Format("Update Materiales set Razon='{0}' where MaterialId= {2}", this.Razon, this.MaterialId ));
+                Retorno = Conexion.Ejecutar(String.Format("Update Materiales set Razon='{0}' where MaterialId= {1}", this.Razon, this.MaterialId ));
                 if (Retorno)
                 {
                     Conexion.Ejecutar(String.Format("Delete from MaterialesDetalle Where MaterialId= {0}", this.MaterialId));
