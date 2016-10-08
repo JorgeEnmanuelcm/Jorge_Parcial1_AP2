@@ -40,6 +40,24 @@ namespace Jorge_Parcial1_AP2 {
         protected global::System.Web.UI.WebControls.Button BuscarButton;
         
         /// <summary>
+        /// FechaLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label FechaLabel;
+        
+        /// <summary>
+        /// fechaTextBox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox fechaTextBox;
+        
+        /// <summary>
         /// RazonLabel control.
         /// </summary>
         /// <remarks>
@@ -56,6 +74,42 @@ namespace Jorge_Parcial1_AP2 {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox RazonTextBox;
+        
+        /// <summary>
+        /// TotalLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label TotalLabel;
+        
+        /// <summary>
+        /// TotalTextBox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TotalTextBox;
+        
+        /// <summary>
+        /// MaterialIdLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label MaterialIdLabel;
+        
+        /// <summary>
+        /// MaterialIdDropDownList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList MaterialIdDropDownList;
         
         /// <summary>
         /// MaterialLabel control.

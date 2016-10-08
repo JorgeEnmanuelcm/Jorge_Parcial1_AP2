@@ -12,7 +12,9 @@
     <form id="Principal" runat="server">
     <div>
         <h1> Primer Parcial </h1><\br><\br>
-        <asp:Button ID="MaterialButton" runat="server" Text="Material" OnClick="MaterialButton_Click" />
+        <asp:Button ID="Material1Button" runat="server" Text="Material" OnClick="Material1Button_Click" /><\br><\br>
+        <asp:Button ID="MaterialButton" runat="server" Text="Solicitudes" OnClick="MaterialButton_Click" />
+        
         <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
             
         </asp:ContentPlaceHolder>

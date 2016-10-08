@@ -22,6 +22,15 @@ namespace Jorge_Parcial1_AP2 {
         protected global::System.Web.UI.WebControls.ContentPlaceHolder head;
         
         /// <summary>
+        /// Material1Button control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button Material1Button;
+        
+        /// <summary>
         /// MaterialButton control.
         /// </summary>
         /// <remarks>

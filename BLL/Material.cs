@@ -11,49 +11,37 @@ namespace BLL
     public class Material : ClaseMaestra
     {
         public int MaterialId { get; set; }
-        public string Razon { get; set; }
-        public List<MaterialesDetalle> Detalle { get; set; }
+        public string Descripcion { get; set; }
+        public int Precio { get; set; }
 
         public Material()
         {
             this.MaterialId = 0;
-            this.Razon = "";
-            this.Detalle = new List<MaterialesDetalle>();
+            this.Descripcion = "";
+            this.Precio = 0;
         }
 
-        public Material(int materialid)
+        public Material(int materialid, string descripcion, int precio)
         {
             this.MaterialId = materialid;
-        }
-
-        public void AgregarMaterial(string Material, string Cantidad)
-        {
-            this.Detalle.Add(new MaterialesDetalle(Material, Cantidad));
+            this.Descripcion = descripcion;
+            this.Precio = precio;
         }
 
         public override bool Insertar()
         {
             ConexionDB Conexion = new ConexionDB();
-            int Retorno = 0;
-            object Identity;
+            bool Retorno = false;
             try
             {
-                Identity = Conexion.ObtenerValor(String.Format("Insert Into Materiales(Razon) values('{0}') select @@IDENTITY", this.Razon));
-                int.TryParse(Identity.ToString(), out Retorno);
-                this.MaterialId = Retorno;
-                if (Retorno > 0)
-                {
-                    foreach (MaterialesDetalle var in Detalle)
-                    {
-                        Conexion.Ejecutar(String.Format("Insert into MaterialesDetalle(MaterialId, Material, Cantidad) Values ({0}, '{1}', '{2}')", this.MaterialId, var.Material, var.Cantidad));
-                    }
-                }
+               Conexion.ObtenerValor(String.Format("Insert Into Materiales(Descripcion, Precio) values('{0}', {1})", this.Descripcion, this.Precio));
+                Retorno = true;  
             }
             catch (Exception ex)
             {
                 throw ex;
             }
-            return Retorno > 0;
+            return Retorno;
 
         }
 
@@ -63,15 +51,8 @@ namespace BLL
             bool Retorno = false;
             try
             {
-                Retorno = Conexion.Ejecutar(String.Format("Update Materiales set Razon='{0}' where MaterialId= {1}", this.Razon, this.MaterialId ));
-                if (Retorno)
-                {
-                    Conexion.Ejecutar(String.Format("Delete from MaterialesDetalle Where MaterialId= {0}", this.MaterialId));
-                    foreach (MaterialesDetalle var in this.Detalle)
-                    {
-                        Conexion.Ejecutar(string.Format("Insert into MaterialesDetalle(MaterialId, Material, Cantidad) Values ({0},'{1}','{2}')", this.MaterialId, var.Material, var.Cantidad));
-                    }
-                }
+                Conexion.Ejecutar(String.Format("Update Materiales set Descripcion='{0}', Precio={1} where MaterialId= {2}", this.Descripcion, this.Precio, this.MaterialId ));
+                Retorno = true; 
             }
             catch (Exception ex)
             {
@@ -86,7 +67,8 @@ namespace BLL
             bool Retorno = false;
             try
             {
-                Retorno = Conexion.Ejecutar(String.Format("Delete from MaterialesDetalle Where MaterialId= {0};" + "Delete from Materiales where MaterialId= {0}", this.MaterialId));
+                 Conexion.Ejecutar(String.Format("Delete from Materiales where MaterialId= {0}", this.MaterialId));
+                Retorno = true;
             }
             catch (Exception ex)
             {
@@ -100,20 +82,14 @@ namespace BLL
         {
             ConexionDB Conexion = new ConexionDB();
             DataTable dt = new DataTable();
-            DataTable dtEventDetalle = new DataTable();
             try
             {
                 dt = Conexion.ObtenerDatos(String.Format("select * from Materiales where MaterialId=" + IdBuscado));
                 if (dt.Rows.Count > 0)
                 {
                     this.MaterialId = (int)dt.Rows[0]["MaterialId"];
-                    this.Razon = dt.Rows[0]["Razon"].ToString();
-                    dtEventDetalle = Conexion.ObtenerDatos(String.Format("select * from MaterialesDetalle where MaterialId=" + IdBuscado));
-
-                    foreach (DataRow row in dtEventDetalle.Rows)
-                    {
-                        AgregarMaterial(row["Material"].ToString(), row["Cantidad"].ToString());
-                    }
+                    this.Descripcion = dt.Rows[0]["Descripcion"].ToString();
+                    this.Precio = (int)dt.Rows[0]["Precio"];
                 }
             }
             catch (Exception ex)
@@ -125,7 +101,11 @@ namespace BLL
 
         public override DataTable Listado(string Campos, string Condicion, string Orden)
         {
-            throw new NotImplementedException();
+            ConexionDB Conexion = new ConexionDB();
+            string OrdenFinal = "";
+            if (!Orden.Equals(""))
+                OrdenFinal = " Order by " + Orden;
+            return Conexion.ObtenerDatos("Select " + Campos + "From Materiales where " + Condicion + " " + OrdenFinal);
         }
     }
 }

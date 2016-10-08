@@ -66,6 +66,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="MaterialWebForm.aspx" />
     <Content Include="packages.config" />
     <Content Include="Principal.Master" />
     <None Include="Web.Debug.config">
@@ -91,6 +92,13 @@
     </Compile>
     <Compile Include="Materiales.aspx.designer.cs">
       <DependentUpon>Materiales.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MaterialWebForm.aspx.cs">
+      <DependentUpon>MaterialWebForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MaterialWebForm.aspx.designer.cs">
+      <DependentUpon>MaterialWebForm.aspx</DependentUpon>
     </Compile>
     <Compile Include="Principal.aspx.cs">
       <DependentUpon>Principal.aspx</DependentUpon>

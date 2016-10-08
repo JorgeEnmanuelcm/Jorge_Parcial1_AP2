@@ -16,7 +16,12 @@ namespace Jorge_Parcial1_AP2
 
         protected void MaterialButton_Click(object sender, EventArgs e)
         {
-            Response.Redirect("Material.aspx");
+            Response.Redirect("Materiales.aspx");
+        }
+
+        protected void Material1Button_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("MaterialWebForm.aspx");
         }
     }
 }

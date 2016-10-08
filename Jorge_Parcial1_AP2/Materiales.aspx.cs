@@ -11,15 +11,24 @@ namespace Jorge_Parcial1_AP2
 {
     public partial class Materiales : System.Web.UI.Page
     {
-        Material mat = new Material();
+        Solicitudes sol = new Solicitudes();
         DataTable dt = new DataTable();
+        Material mat = new Material();
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            DataTable dt = new DataTable();
-            dt.Columns.AddRange(new DataColumn[2] { new DataColumn("Material"), new DataColumn("Cantidad") });
-            ViewState["Material"] = dt;
-            
+            if(!IsPostBack)
+            {
+                MaterialIdDropDownList.DataSource = mat.Listado(" * ", "1=1", "");
+                MaterialIdDropDownList.DataTextField = "Descripcion";
+                MaterialIdDropDownList.DataValueField = "MaterialId";
+                MaterialIdDropDownList.DataBind();
+                
+
+                DataTable dt = new DataTable();
+                dt.Columns.AddRange(new DataColumn[3] { new DataColumn("MaterialId"), new DataColumn("Material"), new DataColumn("Cantidad") });  
+                ViewState["Solicitudes"] = dt;
+            }
         }
 
         protected void NuevoButton_Click(object sender, EventArgs e)
@@ -33,19 +42,26 @@ namespace Jorge_Parcial1_AP2
             CantidadTextBox.Text = string.Empty;
             RazonTextBox.Text = string.Empty;
             IdTextBox.Text = string.Empty;
+            fechaTextBox.Text = string.Empty;
+            TotalTextBox.Text = string.Empty;
+            MaterialGridView.DataSource = string.Empty;
+            MaterialGridView.DataBind();
+           // Response.Write("<script>alert('Todo Limpio')</script>");
         }
 
         public void DevolverDatos()
         {
-            //DataTable dt = new DataTable();
-            IdTextBox.Text = mat.MaterialId.ToString();
-            RazonTextBox.Text = mat.Razon.ToString();
-            foreach (var item in mat.Detalle)
+            
+            IdTextBox.Text = sol.SolicitudlId.ToString();
+            fechaTextBox.Text = sol.Fecha.ToString();
+            RazonTextBox.Text = sol.Razon.ToString();
+            TotalTextBox.Text = sol.Total.ToString();
+            foreach (var item in sol.Detalle)
             {
-                dt = (DataTable)ViewState["Material"];
-                dt.Rows.Add(item.Material, item.Cantidad);
-                ViewState["Material"] = dt;
-                MaterialGridView.DataSource = (DataTable)ViewState["Material"];
+                dt = (DataTable)ViewState["Solicitudes"];
+                dt.Rows.Add(item.MaterialId, item.Material, item.Cantidad); 
+                ViewState["Solicitudes"] = dt;
+                MaterialGridView.DataSource = (DataTable)ViewState["Solicitudes"];
                 MaterialGridView.DataBind();
             }
 
@@ -55,10 +71,20 @@ namespace Jorge_Parcial1_AP2
         {
             bool Retorno = true;
             int id;
+            int total;
             int.TryParse(IdTextBox.Text, out id);
+            int.TryParse(TotalTextBox.Text, out total);
             if (id > 0)
             {
-                mat.MaterialId = id;
+                sol.SolicitudlId = id;
+            }
+            else
+            {
+                Retorno = false;
+            }
+            if (fechaTextBox.Text.Length > 0)
+            {
+                sol.Fecha = fechaTextBox.Text;
             }
             else
             {
@@ -66,7 +92,15 @@ namespace Jorge_Parcial1_AP2
             }
             if (RazonTextBox.Text.Length > 0)
             {
-                mat.Razon = RazonTextBox.Text;
+                sol.Razon = RazonTextBox.Text;
+            }
+            else
+            {
+                Retorno = false;
+            }
+            if (total > 0)
+            {
+                sol.Total = total;
             }
             else
             {
@@ -76,7 +110,7 @@ namespace Jorge_Parcial1_AP2
             {
                 foreach (GridViewRow var in MaterialGridView.Rows)
                 {
-                    mat.AgregarMaterial(var.Cells[0].Text, var.Cells[1].Text);
+                    sol.AgregarSolicitud(Convert.ToInt32(var.Cells[0].Text), var.Cells[1].Text, Convert.ToInt32(var.Cells[2].Text)); 
                 }
             }
             else
@@ -88,20 +122,22 @@ namespace Jorge_Parcial1_AP2
 
         protected void AgregarButton_Click(object sender, EventArgs e)
         {
-           // DataTable dt = new DataTable();
-            DataTable dt = (DataTable)ViewState["Material"];
-            dt.Rows.Add(MaterialTextBox.Text, CantidadTextBox.Text);
-            ViewState["Material"] = dt;
-            MaterialGridView.DataSource = (DataTable)ViewState["Material"];
+            int cantidad;
+            int.TryParse(CantidadTextBox.Text, out cantidad);
+            DataTable dt = (DataTable)ViewState["Solicitudes"];
+            dt.Rows.Add(MaterialIdDropDownList.SelectedValue, MaterialTextBox.Text, CantidadTextBox.Text);
+            ViewState["Solicitudes"] = dt;
+            MaterialGridView.DataSource = dt; 
             MaterialGridView.DataBind();
-
+            TotalTextBox.Text += (20 * cantidad).ToString();
         }
 
         protected void GuardarButton_Click(object sender, EventArgs e)
         {
-
-            ObtenerDatos();
-            if (mat.Insertar())
+            if (IdTextBox.Text.Length == 0)
+            {
+                ObtenerDatos();
+            if (sol.Insertar())
             {
                 Limpiar();
                 Response.Write("<script>alert('Inserto')</script>");
@@ -110,10 +146,11 @@ namespace Jorge_Parcial1_AP2
             {
                 Response.Write("<script>alert('error')</script>");
             }
+            }
             if (IdTextBox.Text.Length > 0)
             {
                 ObtenerDatos();
-                if (mat.Editar())
+                if (sol.Editar())
                 {
                     Response.Write("<script>alert('Modifico')</script>");
                 }
@@ -129,9 +166,9 @@ namespace Jorge_Parcial1_AP2
             try
             {
                 ObtenerDatos();
-                if (mat.Buscar(mat.MaterialId))
+                if (sol.Buscar(sol.SolicitudlId))
                 {
-                    if (mat.Eliminar())
+                    if (sol.Eliminar())
                     {
                         Limpiar();  
                     }
@@ -157,7 +194,7 @@ namespace Jorge_Parcial1_AP2
             }
             else
             {
-                if (mat.Buscar(id))
+                if (sol.Buscar(id))
                 {
                     DevolverDatos();
                 }

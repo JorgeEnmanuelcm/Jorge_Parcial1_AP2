@@ -6,25 +6,28 @@ using System.Threading.Tasks;
 
 namespace BLL
 {
-    public class MaterialesDetalle
+    public class SolicitudesDetalle
     {
         public int Id { get; set; }
-        public int MaterialId { get; set; }
+        public int SolicitudId { get; set; }
 
+       public int MaterialId { get; set; }
         public string Material { get; set; }
-        public string Cantidad { get; set; } // no va string pero tube que ponerlo asi por algo que daba error
+        public int Cantidad { get; set; } 
 
 
-        public MaterialesDetalle()
+        public SolicitudesDetalle()
         {
             this.Id = 0;
+            this.SolicitudId = 0;
             this.MaterialId = 0;
             this.Material = "";
-            this.Cantidad = "";
+            this.Cantidad = 0;
         }
 
-        public MaterialesDetalle(string material, string cantidad)
+        public SolicitudesDetalle(int materialid, string material, int cantidad) 
         {
+            this.MaterialId = materialid;
             this.Material = material;
             this.Cantidad = cantidad;
         }
